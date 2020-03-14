@@ -1,0 +1,27 @@
+{
+    "FrontUltrsonicSensor" : {
+        "triggerPin" : 18,
+        "echoPin" : 27
+    },
+    "BackUltrsonicSensor" : {
+        "triggerPin" : 22,
+        "echoPin" : 23
+    },
+    "HeadMountServo" : {
+        "pwmPin" : 17
+    },
+    "MultiStepperController" : {
+        "enablePin" : 21,
+        "stepType" : "1/4",
+        "wheelLeft" : {
+            "name" : "WheelLeft",
+            "stepPin" : 26,
+            "dirPin" : 19
+        },
+        "wheelRight": {
+            "name" : "WheelRight",
+            "stepPin" : 6,
+            "dirPin" : 13
+        }
+    }
+}
