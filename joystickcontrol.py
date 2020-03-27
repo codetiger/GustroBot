@@ -3,8 +3,8 @@ import time
 import sys
 import json
 
-from motioncontrol import MotionController
-from MPU9250 import MPU9250
+from motioncontrol import MotionControl
+from motionsensor import MotionSensor
 from servo import ServoMotor
 from ultrasonic import UltrsonicSensor
 
@@ -13,8 +13,9 @@ if __name__ == "__main__":
     with open('config.json') as f:
         config = json.load(f)
 
-    motionController = MotionController(config['MultiStepperController'])
-    # mpu9250 = MPU9250()
+    motionControl = MotionControl(config['MultiStepperController'])
+    motionControl.setSpeed(1.5)
+    motionsensor = MotionSensor()
     ultrasonicSensorFront = UltrsonicSensor(config["FrontUltrsonicSensor"])
     ultrasonicSensorBack = UltrsonicSensor(config["BackUltrsonicSensor"])
     servo = ServoMotor(config['HeadMountServo'])
@@ -28,16 +29,16 @@ if __name__ == "__main__":
                 # print(event.ev_type, event.code, event.state)
                 if event.ev_type == 'Key' and event.code == 'BTN_NORTH' and event.state == 0:
                     print('Moving forward')
-                    motionController.move(0.1)
+                    motionControl.move(0.1)
                 elif event.ev_type == 'Key' and event.code == 'BTN_EAST' and event.state == 0:
                     print('Moving backward')
-                    motionController.move(-0.1)
+                    motionControl.move(-0.1)
                 elif event.ev_type == 'Key' and event.code == 'BTN_Z' and event.state == 0:
                     print('Rotating')
-                    motionController.rotate(10)
+                    motionControl.rotate(10)
                 elif event.ev_type == 'Key' and event.code == 'BTN_WEST' and event.state == 0:
                     print('Rotating')
-                    motionController.rotate(-10)
+                    motionControl.rotate(-10)
                 # elif event.ev_type == 'Key' and event.code == 'BTN_WEST1' and event.state == 0:
                 #     accel = mpu9250.readAccel()
                 #     print("ax=\t", accel['x'], "\tay=\t", accel['y'], "\taz=\t", accel['z'])
@@ -62,7 +63,7 @@ if __name__ == "__main__":
                     distance = ultrasonicSensorBack.getDistance()
                     print ("Measured Distance = %.1f cm in Back" % (distance))
     except KeyboardInterrupt:
-        motionController.cleanup()
+        motionControl.cleanup()
         servo.clean()
         ultrasonicSensorFront.clean()
         ultrasonicSensorBack.clean()

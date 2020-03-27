@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 from time import sleep
 
-class MultiStepperController:
+class MultiStepperControl:
     _microsteps =  { 'Full'  :   1.0,
                     'Half'  :   2.0,
                     '1/4'   :   4.0,
