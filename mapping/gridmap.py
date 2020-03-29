@@ -119,26 +119,28 @@ class GridMap:
         while fringe:
             n = fringe.pop()
             nx, ny = n
-            # West
-            if nx > 0:
-                if pmap[nx - 1, ny] == 0.5:
-                    pmap[nx - 1, ny] = 0.0
-                    fringe.appendleft((nx - 1, ny))
-            # East
-            if nx < sx - 1:
-                if pmap[nx + 1, ny] == 0.5:
-                    pmap[nx + 1, ny] = 0.0
-                    fringe.appendleft((nx + 1, ny))
-            # North
-            if ny > 0:
-                if pmap[nx, ny - 1] == 0.5:
-                    pmap[nx, ny - 1] = 0.0
-                    fringe.appendleft((nx, ny - 1))
-            # South
-            if ny < sy - 1:
-                if pmap[nx, ny + 1] == 0.5:
-                    pmap[nx, ny + 1] = 0.0
-                    fringe.appendleft((nx, ny + 1))
+            if ny < sy:
+                # West
+                if nx > 0:
+                    if pmap[nx - 1, ny] == 0.5:
+                        pmap[nx - 1, ny] = 0.0
+                        fringe.appendleft((nx - 1, ny))
+                # East
+                if nx < sx - 1:
+                    if pmap[nx + 1, ny] == 0.5:
+                        pmap[nx + 1, ny] = 0.0
+                        fringe.appendleft((nx + 1, ny))
+            if nx < sx:
+                # North
+                if ny > 0:
+                    if pmap[nx, ny - 1] == 0.5:
+                        pmap[nx, ny - 1] = 0.0
+                        fringe.appendleft((nx, ny - 1))
+                # South
+                if ny < sy - 1:
+                    if pmap[nx, ny + 1] == 0.5:
+                        pmap[nx, ny + 1] = 0.0
+                        fringe.appendleft((nx, ny + 1))
 
     def _generate_ray_casting_grid_map(self, ox, oy, xyreso, breshen=True):
         """

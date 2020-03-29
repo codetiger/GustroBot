@@ -17,6 +17,7 @@ class ServoMotor:
         self._pwmPin.stop()
 
     def rotate(self, angle):
+        angle = 180 - angle
         if angle >= self._min and angle <= self._max:
             self._setAngle(angle)
             return angle

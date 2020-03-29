@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 import time
+import statistics
 
 class UltrsonicSensor:
     def __init__(self, config):
@@ -14,14 +15,18 @@ class UltrsonicSensor:
     def clean(self):
         pass
 
-    def getAverageDistance(self, count):
+    def getMedianDistance(self, count):
         avgDist = 0
+        distances = [0] * count
         for i in range(count):
-            dist = self.getDistance()
-            avgDist += dist
-        return avgDist / count
+            distances[i] = 0
+            while distances[i] > 400 or distances[i] < 2:
+                distances[i] = self.getDistance()
+        
+        return statistics.median(distances)
             
     def getDistance(self):
+        time.sleep(0.01) # Very important to reduce noise
         GPIO.output(self._triggerPin, True)
         time.sleep(0.00001)
         GPIO.output(self._triggerPin, False)
@@ -38,8 +43,4 @@ class UltrsonicSensor:
         distance = (timeElapsed * 34300.0) / 2
         distance = round(distance, 2)
 
-        if distance > 2 and distance < 400:
-            distance = distance
-        else:
-            distance = 0
         return distance

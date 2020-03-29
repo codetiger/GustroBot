@@ -30,15 +30,15 @@ if __name__ == "__main__":
     position = [0, 0]
 
     def scanSurroundings(robotAngle):
-        for angle in range(0, 180, 1):
+        for angle in range(0, 180, 8):
             servo.rotate(angle)
 
-            distance = ultrasonicSensorFront.getAverageDistance(2)
-            theta = ((angle  + 90)) * math.pi / 180.0
+            distance = ultrasonicSensorFront.getMedianDistance(5)
+            theta = (360 - angle) * math.pi / 180.0
             gridMap.addPoint(position, theta, distance)
 
-            distance = ultrasonicSensorBack.getAverageDistance(2)
-            theta = ((angle  + 270)) * math.pi / 180.0
+            distance = ultrasonicSensorBack.getMedianDistance(5)
+            theta = ((360 - angle) + 180) * math.pi / 180.0
             gridMap.addPoint(position, theta, distance)
             
     def moveStraight(distance:float):
@@ -57,7 +57,10 @@ if __name__ == "__main__":
     
     gridMap.recalculate()
     gridMap.saveImage("map.png")
-    
+        
+    # distance = ultrasonicSensorFront.getAverageDistance(20)
+    # print("Final Dist: ", distance)
+
     servo.clean()
     ultrasonicSensorFront.clean()
     ultrasonicSensorBack.clean()
